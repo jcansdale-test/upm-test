@@ -23,6 +23,9 @@ jobs:
           @${{ env.SCOPE }}:registry=https://npm.pkg.github.com
           EOM
 
+      - name: Publish package
+        run: npm publish
+      
   install:
     needs: [publish]
     runs-on: ubuntu-latest
