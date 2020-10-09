@@ -36,3 +36,6 @@ jobs:
 
       - name: Install (fake) unscoped package
         run: npm install upm-test
+
+      - name: List packages
+        run: npm ls
