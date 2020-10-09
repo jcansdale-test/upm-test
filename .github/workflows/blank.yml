@@ -1,17 +1,39 @@
 on:
   push:
 
+env:
+  SCOPE: ${{ github.repository_owner }}
+  VERSION: 1.0.${{ github.run_number }}
+
 jobs:
   publish:
     runs-on: ubuntu-latest
 
     steps:
       - name: Create package with @scope
-        run: npm init --scope ${{ github.repository_owner }} -y
+        run: npm init --scope ${{ env.SCOPE }} -y
+
+      - name: Set package version to ${{ env.VERSION }}
+        run: npm version ${{ env.VERSION }} --no-git-tag-version
 
       - name: Create .npmrc
         run: |
           cat > .npmrc << EOM
           //npm.pkg.github.com/:_authToken=${{ github.token }}
-          @${{ github.repository_owner }}:registry=https://npm.pkg.github.com
+          @${{ env.SCOPE }}:registry=https://npm.pkg.github.com
           EOM
+
+  install:
+    needs: [publish]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create .npmrc
+        run: |
+          cat > .npmrc << EOM
+          //npm.pkg.github.com/:_authToken=${{ github.token }}
+          @${{ env.SCOPE }}:registry=https://npm.pkg.github.com/@${{ env.SCOPE }}
+          EOM
+
+      - name: Install (fake) unscoped package
+        run: npm install upm-test
