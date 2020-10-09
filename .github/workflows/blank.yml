@@ -32,7 +32,7 @@ jobs:
         run: |
           cat > .npmrc << EOM
           //npm.pkg.github.com/:_authToken=${{ github.token }}
-          @${{ env.SCOPE }}:registry=https://npm.pkg.github.com/@${{ env.SCOPE }}
+          registry=https://npm.pkg.github.com/@${{ env.SCOPE }}
           EOM
 
       - name: Install (fake) unscoped package
