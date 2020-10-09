@@ -1,0 +1,17 @@
+on:
+  push:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create package with @scope
+        run: npm init --scope ${{ github.repository_owner }} -y
+
+      - name: Create .npmrc
+        run: |
+          cat > .npmrc << EOM
+          //npm.pkg.github.com/:_authToken=${{ github.token }}
+          @${{ github.repository_owner }}:registry=https://npm.pkg.github.com
+          EOM
