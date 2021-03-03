@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Create package with @scope
-        run: npm init --scope ${{ env.SCOPE }} -y
+      - name: Create package without @scope
+        run: npm init -y
 
       - name: Set package version to ${{ env.VERSION }}
         run: npm version ${{ env.VERSION }} --no-git-tag-version
@@ -20,7 +20,7 @@ jobs:
         run: echo //npm.pkg.github.com/:_authToken=${{ github.token }} > .npmrc
 
       - name: Publish package
-        run: npm publish --registry=https://npm.pkg.github.com
+        run: npm publish --registry=https://npm.pkg.github.com/@${{ env.SCOPE }}
       
   install:
     needs: [publish]
