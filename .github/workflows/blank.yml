@@ -28,6 +28,7 @@ jobs:
 
     steps:
       - name: Create .npmrc
+        shell: bash
         run: |
           cat > .npmrc << EOM
           //npm.pkg.github.com/:_authToken=${{ github.token }}
